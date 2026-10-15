@@ -1,0 +1,49 @@
+import ipywidgets as widgets
+from IPython.display import display, clear_output
+
+# Judul
+print("❤️ FORM AJAKAN BALIKAN ❤️\n" + "="*28)
+
+# Input Nama
+input_nama = widgets.Text(
+    value='',
+    placeholder='Tulis nama kamu di sini...',
+    description='Nama:',
+    disabled=False
+)
+
+# Tombol Pilihan
+btn_iya = widgets.Button(
+    description='Iyaa mau 🥰',
+    button_style='success', # Warna hijau
+    icon='heart'
+)
+
+btn_mau_banget = widgets.Button(
+    description='Mau banget! 😍',
+    button_style='danger', # Warna merah/pink
+    icon='heart'
+)
+
+output = widgets.Output()
+
+def respon_iya(b):
+    with output:
+        clear_output()
+        nama = input_nama.value if input_nama.value else "Kamu"
+        print(f"\n🎉 YEEEY! {nama} bilang: 'Iyaa mau'! Makasih yaaa, yuk kita mulai dari awal lagi! ❤️✨")
+
+def respon_mau_banget(b):
+    with output:
+        clear_output()
+        nama = input_nama.value if input_nama.value else "Kamu"
+        print(f"\n💖 SWEET BANGET! {nama} bilang: 'Mau banget!' I love you so much! 🥰👩‍❤️‍👨")
+
+btn_iya.on_click(respon_iya)
+btn_mau_banget.on_click(respon_mau_banget)
+
+# Menampilkan Form
+display(input_nama)
+print("\nPertanyaan: Balikan?")
+display(widgets.HBox([btn_iya, btn_mau_banget]))
+display(output)
