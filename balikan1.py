@@ -26,7 +26,7 @@ nama = st.text_input("Masukkan nama kamu 🥹")
 if nama:
     st.markdown(f"### Hai, {nama}! 💗")
     st.write("Aku masih sayang kamu...")
-    st.subheader("Balikan mau ga? 🥺❤️")
+    st.subheader("Balikan sama kania imut lusyu menggemaskan mau? 🥺❤️")
 
     # Tombol dan efek dibuat di komponen HTML
     html = """
@@ -42,7 +42,7 @@ if nama:
           background:#ff6194;color:white;border:0;
           border-radius:12px;padding:13px 22px;
           font-size:17px;cursor:pointer;">
-          Mau ❤️
+          Mau banget ❤️
         </button>
 
         <button id="no"
@@ -79,7 +79,7 @@ if nama:
         document.getElementById('result').innerHTML =
           'TAPI BOONG WLEEEEEE';
 
-        const emojis = ['❤️','💖','💕','💗','💘','💝'];
+        const emojis = ['🖕','🤪','🤣','😝','🤡','💩','😏','🙄'];
         for (let i = 0; i < 70; i++) {
           setTimeout(() => {
             const h = document.createElement('span');
