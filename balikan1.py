@@ -77,7 +77,7 @@ if nama:
       function sayYes() {
         document.getElementById('area').style.display = 'none';
         document.getElementById('result').innerHTML =
-          'TAPI BOONG';
+          'TAPI BOONG WLEEEEEE';
 
         const emojis = ['❤️','💖','💕','💗','💘','💝'];
         for (let i = 0; i < 70; i++) {
