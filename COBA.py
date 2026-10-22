@@ -1,397 +1,187 @@
 
-import streamlit as st
-
-st.set_page_config(
-    page_title="Barkas | Online Shop",
-    page_icon="🛍️",
-    layout="wide"
-)
-
-# ==========================
-# CUSTOM DESIGN
-# ==========================
 st.markdown("""
 <style>
+/* BACKGROUND */
 .stApp {
-    background: linear-gradient(135deg, #dceeff, #f2f8ff);
-    color: #183153;
+    background: linear-gradient(145deg, #eaf4ff 0%, #f7faff 55%, #e4f0ff 100%);
+    color: #1b3150;
 }
 
 .block-container {
+    max-width: 1250px;
     padding-top: 2rem;
     padding-bottom: 3rem;
-    max-width: 1200px;
 }
 
+/* SIDEBAR */
 [data-testid="stSidebar"] {
-    background-color: #183153;
+    background: linear-gradient(180deg, #163b70, #10294e);
 }
 
 [data-testid="stSidebar"] * {
-    color: white !important;
+    color: #ffffff !important;
 }
 
+[data-testid="stSidebar"] [data-testid="stRadio"] label {
+    padding: 8px 10px;
+    border-radius: 10px;
+}
+
+/* MAIN HEADINGS */
+h1, h2, h3 {
+    color: #17365e !important;
+    letter-spacing: -0.5px;
+}
+
+h1 {
+    font-weight: 800 !important;
+}
+
+p, label {
+    color: #304b6b;
+}
+
+/* HERO BANNER */
 .hero {
-    background: linear-gradient(120deg, #183153, #2878c8);
-    padding: 35px;
-    border-radius: 24px;
+    background: linear-gradient(120deg, #153765, #2779d6);
+    padding: 40px;
+    border-radius: 26px;
     color: white;
-    margin-bottom: 25px;
-    box-shadow: 0 8px 25px #18315322;
+    margin-bottom: 30px;
+    box-shadow: 0 12px 30px rgba(35, 101, 180, 0.18);
 }
 
 .hero h1 {
+    color: white !important;
     font-size: 48px;
-    margin: 0;
-    color: white;
+    font-weight: 850;
+    margin-bottom: 5px;
 }
 
 .hero p {
-    color: #e0efff;
-    font-size: 17px;
+    color: #e3efff;
+    font-size: 16px;
 }
 
-.product-card {
-    background: white;
-    padding: 22px;
-    border-radius: 20px;
-    border: 1px solid #d4e5f8;
-    box-shadow: 0 5px 20px #18315310;
-    min-height: 210px;
-    margin-bottom: 10px;
+/* PRODUCT CONTAINERS */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    background: rgba(255,255,255,0.96);
+    border: 1px solid #dbe9f8 !important;
+    border-radius: 22px !important;
+    box-shadow: 0 5px 18px rgba(35, 80, 130, 0.07);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+[data-testid="stVerticalBlockBorderWrapper"]:hover {
+    box-shadow: 0 10px 26px rgba(35, 80, 130, 0.13);
+}
+
+/* PRODUCT NAME & PRICE */
 .product-name {
     font-size: 21px;
-    font-weight: 700;
-    color: #183153;
+    font-weight: 800;
+    color: #193b67;
+    margin-top: 8px;
 }
 
 .price {
-    color: #1874cf;
-    font-size: 24px;
-    font-weight: 800;
-    margin: 12px 0;
+    color: #176ed0;
+    font-size: 27px;
+    font-weight: 850;
+    margin: 10px 0;
 }
 
 .tag {
     display: inline-block;
-    background: #e4f1ff;
-    color: #2264a0;
-    padding: 5px 11px;
-    border-radius: 30px;
+    background: #e8f2ff;
+    color: #2364a5;
+    padding: 6px 13px;
+    border-radius: 50px;
     font-size: 12px;
+    font-weight: 650;
 }
 
+/* ALL BUTTONS */
 div.stButton > button {
-    background-color: #2878c8;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 10px;
-    font-weight: 600;
-    transition: 0.2s;
+    background: linear-gradient(110deg, #287ce0, #1760bf);
+    color: white !important;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    min-height: 46px;
+    font-weight: 700;
+    letter-spacing: 0.1px;
+    box-shadow: 0 5px 12px rgba(31, 104, 198, 0.17);
+    transition: all 0.2s ease;
 }
 
 div.stButton > button:hover {
-    background-color: #183153;
-    color: white;
-    border: none;
+    background: linear-gradient(110deg, #155ab3, #103f85);
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(31, 104, 198, 0.25);
+    border: 1px solid transparent;
 }
 
-h1, h2, h3 {
-    color: #183153;
+div.stButton > button:active {
+    transform: scale(0.98);
 }
 
+/* INPUTS */
+div[data-baseweb="input"] > div,
+div[data-baseweb="textarea"] > div,
+div[data-baseweb="select"] > div {
+    background: white;
+    border: 1px solid #d4e4f5;
+    border-radius: 12px;
+}
+
+div[data-baseweb="input"] > div:focus-within,
+div[data-baseweb="textarea"] > div:focus-within {
+    border-color: #287ce0;
+    box-shadow: 0 0 0 2px #287ce022;
+}
+
+/* CHECKOUT SUMMARY */
+.checkout-box {
+    background: white;
+    border: 1px solid #dbe9f8;
+    padding: 24px;
+    border-radius: 22px;
+    box-shadow: 0 8px 24px #1b4e8510;
+}
+
+.checkout-total {
+    color: #176ed0;
+    font-size: 30px;
+    font-weight: 850;
+}
+
+/* METRICS */
 [data-testid="stMetric"] {
     background: white;
-    padding: 18px;
-    border-radius: 16px;
-    border: 1px solid #d4e5f8;
+    border: 1px solid #dbe9f8;
+    padding: 20px;
+    border-radius: 18px;
 }
 
+/* DIVIDER */
 hr {
-    border-color: #c8def5;
+    border-color: #d6e6f7;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .hero {
+        padding: 24px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .block-container {
+        padding: 1rem;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
-
-# ==========================
-# DATA PRODUK
-# ==========================
-if "products" not in st.session_state:
-    st.session_state.products = {
-        "Korean Cardigan": {
-            "harga": 85000,
-            "ukuran": "M",
-            "kondisi": "Good Condition",
-            "stok": 5,
-            "emoji": "🧥",
-            "deskripsi": "Cardigan simpel untuk daily outfit."
-        },
-        "Vintage Denim Skirt": {
-            "harga": 55000,
-            "ukuran": "S",
-            "kondisi": "Very Good",
-            "stok": 3,
-            "emoji": "👗",
-            "deskripsi": "Rok denim vintage yang stylish."
-        },
-        "Basic Tanktop": {
-            "harga": 25000,
-            "ukuran": "All Size",
-            "kondisi": "Good Condition",
-            "stok": 8,
-            "emoji": "👚",
-            "deskripsi": "Tanktop basic yang mudah dipadukan."
-        },
-        "Vintage Shirt": {
-            "harga": 45000,
-            "ukuran": "L",
-            "kondisi": "Good Condition",
-            "stok": 4,
-            "emoji": "👕",
-            "deskripsi": "Kemeja vintage untuk tampilan casual."
-        }
-    }
-
-if "cart" not in st.session_state:
-    st.session_state.cart = {}
-
-if "order" not in st.session_state:
-    st.session_state.order = None
-
-products = st.session_state.products
-
-def rupiah(n):
-    return "Rp" + f"{n:,}".replace(",", ".")
-
-# ==========================
-# SIDEBAR
-# ==========================
-st.sidebar.markdown("# 🛍️ BARKAS")
-st.sidebar.caption("Your favorite finds.")
-menu = st.sidebar.radio(
-    "NAVIGATION",
-    ["Home", "Keranjang", "Checkout"]
-)
-
-jumlah_cart = sum(st.session_state.cart.values())
-st.sidebar.markdown("---")
-st.sidebar.markdown(f"🛒 Isi keranjang: **{jumlah_cart} barang**")
-st.sidebar.markdown("---")
-st.sidebar.caption("Barkas Online Store")
-
-# ==========================
-# HOME
-# ==========================
-if menu == "Home":
-
-    st.markdown("""
-    <div class="hero">
-        <h1>🛍️ BARKAS</h1>
-        <p>Find your style, find your favorite.</p>
-        <p>Temukan barang favoritmu dengan harga bersahabat.</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.subheader("Explore Our Collection")
-    st.write("Pilihan barang yang bisa kamu temukan di Barkas.")
-
-    cari = st.text_input(
-        "🔎 Cari produk",
-        placeholder="Cari cardigan, skirt, tanktop..."
-    )
-
-    daftar = [
-        (nama, p) for nama, p in products.items()
-        if cari.lower() in nama.lower()
-    ]
-
-    if not daftar:
-        st.info("Produk tidak ditemukan.")
-
-    cols = st.columns(2)
-
-    for i, (nama, p) in enumerate(daftar):
-        with cols[i % 2]:
-            with st.container(border=True):
-                st.markdown(
-                    f"""
-                    <div style="text-align:center; padding:10px;">
-                        <div style="font-size:65px;">
-                            {p['emoji']}
-                        </div>
-                        <div class="product-name">{nama}</div>
-                        <div class="price">{rupiah(p['harga'])}</div>
-                        <span class="tag">{p['kondisi']}</span>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-                st.write(p["deskripsi"])
-                st.caption(
-                    f"Ukuran: {p['ukuran']} | Stok: {p['stok']}"
-                )
-
-                qty = st.number_input(
-                    "Jumlah",
-                    min_value=1,
-                    max_value=max(1, p["stok"]),
-                    value=1,
-                    key="qty_" + nama,
-                    disabled=p["stok"] == 0
-                )
-
-                if p["stok"] == 0:
-                    st.error("Stok habis.")
-                elif st.button(
-                    "＋ Tambah ke Keranjang",
-                    key="add_" + nama,
-                    use_container_width=True
-                ):
-                    sudah = st.session_state.cart.get(nama, 0)
-
-                    if sudah + qty <= p["stok"]:
-                        st.session_state.cart[nama] = sudah + qty
-                        st.toast("Produk berhasil ditambahkan!")
-                    else:
-                        st.error("Jumlah melebihi stok tersedia.")
-
-    st.markdown("---")
-    st.caption("BARKAS © Online Store Demo")
-
-# ==========================
-# KERANJANG
-# ==========================
-elif menu == "Keranjang":
-
-    st.markdown("## 🛒 Keranjang Belanja")
-    cart = st.session_state.cart
-
-    if not cart:
-        st.info("Keranjangmu masih kosong. Yuk, pilih produk!")
-    else:
-        total = 0
-
-        for nama, qty in list(cart.items()):
-            p = products[nama]
-            subtotal = p["harga"] * qty
-            total += subtotal
-
-            with st.container(border=True):
-                c1, c2 = st.columns([3, 1])
-
-                with c1:
-                    st.markdown(f"### {p['emoji']} {nama}")
-                    st.write(f"{rupiah(p['harga'])} × {qty}")
-                    st.write(f"Subtotal: **{rupiah(subtotal)}**")
-
-                with c2:
-                    if st.button("Hapus", key="hapus_" + nama):
-                        del st.session_state.cart[nama]
-                        st.rerun()
-
-        st.divider()
-        st.metric("Total Belanja", rupiah(total))
-
-        st.info("Pilih menu Checkout di sidebar untuk melanjutkan.")
-
-# ==========================
-# CHECKOUT
-# ==========================
-elif menu == "Checkout":
-
-    st.markdown("## 💳 Checkout")
-    cart = st.session_state.cart
-
-    if not cart:
-        st.info("Keranjang masih kosong.")
-    else:
-        subtotal = sum(
-            products[nama]["harga"] * qty
-            for nama, qty in cart.items()
-        )
-
-        st.markdown("### Ringkasan Pesanan")
-
-        for nama, qty in cart.items():
-            p = products[nama]
-            st.write(
-                f"- {nama} × {qty} — "
-                f"{rupiah(p['harga'] * qty)}"
-            )
-
-        st.divider()
-
-        nama_pembeli = st.text_input("Nama Penerima")
-        telepon = st.text_input("Nomor Telepon")
-        alamat = st.text_area("Alamat Lengkap")
-
-        kurir = st.selectbox(
-            "Pengiriman",
-            ["Reguler", "Express"]
-        )
-
-        ongkir = 15000 if kurir == "Reguler" else 25000
-
-        metode = st.selectbox(
-            "Metode Pembayaran",
-            ["Transfer (Simulasi)", "COD"]
-        )
-
-        st.markdown("### Rincian Pembayaran")
-        st.write("Subtotal:", rupiah(subtotal))
-        st.write("Ongkir:", rupiah(ongkir))
-
-        st.markdown(
-            f"<div class='product-card'>"
-            f"<div>Total Pembayaran</div>"
-            f"<div class='price'>{rupiah(subtotal + ongkir)}</div>"
-            f"</div>",
-            unsafe_allow_html=True
-        )
-
-        if st.button("Buat Pesanan", use_container_width=True):
-
-            if not nama_pembeli.strip() or not telepon.strip() or not alamat.strip():
-                st.error("Mohon lengkapi semua data.")
-            elif not telepon.strip().replace("+", "").replace("-", "").replace(" ", "").isdigit():
-                st.error("Nomor telepon tidak valid.")
-            elif any(
-                qty > products[nama]["stok"]
-                for nama, qty in cart.items()
-            ):
-                st.error("Stok tidak mencukupi.")
-            else:
-                for nama, qty in cart.items():
-                    products[nama]["stok"] -= qty
-
-                st.session_state.order = {
-                    "nama": nama_pembeli,
-                    "total": subtotal + ongkir,
-                    "metode": metode,
-                    "status": (
-                        "Menunggu Konfirmasi"
-                        if metode == "COD"
-                        else "Menunggu Pembayaran (Simulasi)"
-                    )
-                }
-
-                st.session_state.cart = {}
-                st.rerun()
-
-    if st.session_state.order:
-        order = st.session_state.order
-
-        st.success("Pesanan berhasil dibuat!")
-        st.markdown("### 🎉 Order Summary")
-        st.write("Nama:", order["nama"])
-        st.write("Total:", rupiah(order["total"]))
-        st.write("Pembayaran:", order["metode"])
-        st.info("Status: " + order["status"])
-        st.caption(
-            "Ini hanya simulasi. Belum ada pembayaran "
-            "atau pengiriman sungguhan."
-        )
