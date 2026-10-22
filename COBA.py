@@ -1,89 +1,244 @@
 
 import streamlit as st
 import uuid
+import html
 
 st.set_page_config(
-    page_title="Barkas Marketplace",
-    page_icon="🛍️",
+    page_title="Barkas | Marketplace",
+    page_icon="B",
     layout="wide"
 )
 
 # ==========================================
-# CSS DESIGN
+# DESIGN SYSTEM
 # ==========================================
 st.markdown("""
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 .stApp {
-    background: linear-gradient(135deg,#e8f3ff,#f8fbff,#e4efff);
-    color: #183153;
+    background: #f5f8fc;
+    color: #1b2b45;
+    font-family: 'Inter', sans-serif;
 }
+
 .block-container {
-    max-width: 1250px;
-    padding-top: 2rem;
-    padding-bottom: 3rem;
+    max-width: 1280px;
+    padding: 1.7rem 2rem 3rem;
 }
+
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg,#153765,#10294e);
+    background: #102744;
 }
+
 [data-testid="stSidebar"] * {
-    color: white !important;
+    color: #eef5ff !important;
 }
-h1,h2,h3 { color: #183153 !important; }
-.hero {
-    background: linear-gradient(120deg,#153765,#2878d0);
-    padding: 35px;
-    border-radius: 25px;
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label {
+    border-radius: 9px;
+    padding: 7px 10px;
+}
+
+[data-testid="stSidebar"] hr {
+    border-color: #304967;
+}
+
+h1, h2, h3 {
+    color: #172c49 !important;
+    letter-spacing: -0.7px;
+}
+
+h1 {
+    font-weight: 800 !important;
+}
+
+p, label {
+    color: #536780;
+}
+
+[data-testid="stCaptionContainer"] p {
+    color: #71829a;
+}
+
+.brand {
     color: white;
-    margin-bottom: 25px;
-    box-shadow: 0 12px 30px #18315320;
+    font-size: 29px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 0;
 }
+
+.brand-sub {
+    font-size: 12px;
+    color: #b7cae2;
+    letter-spacing: 1px;
+}
+
+.hero {
+    background: linear-gradient(115deg, #102744, #245a91);
+    padding: 45px 42px;
+    border-radius: 20px;
+    color: white;
+    margin: 8px 0 32px;
+    box-shadow: 0 12px 35px rgba(16,39,68,.12);
+}
+
+.hero .eyebrow {
+    font-size: 11px;
+    color: #bcd6f5;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
 .hero h1 {
     color: white !important;
-    font-size: 44px;
-    font-weight: 850;
+    font-size: clamp(30px, 4vw, 46px);
+    line-height: 1.12;
+    margin: 12px 0;
 }
-.hero p { color: #e3efff; }
-div.stButton > button {
-    background: linear-gradient(110deg,#3989ed,#1764c0);
-    color: white !important;
-    border: none;
-    border-radius: 14px;
-    min-height: 44px;
+
+.hero p {
+    color: #d7e6f8;
+    font-size: 15px;
+    max-width: 540px;
+    line-height: 1.8;
+}
+
+.section-title {
+    font-size: 23px;
+    font-weight: 750;
+    color: #172c49;
+}
+
+.product-name {
+    color: #172c49;
+    font-size: 17px;
     font-weight: 700;
-    transition: 0.2s;
+    line-height: 1.4;
 }
-div.stButton > button:hover {
-    background: #103e80;
-    color: white !important;
-    transform: translateY(-2px);
-}
-[data-testid="stVerticalBlockBorderWrapper"] {
-    background: white;
-    border: 1px solid #d8e8f8;
-    border-radius: 18px;
-    box-shadow: 0 5px 20px #1831530b;
-}
-.price {
-    color: #176ed0;
-    font-size: 25px;
+
+.product-price {
+    color: #175da8;
+    font-size: 23px;
     font-weight: 800;
+    margin: 8px 0;
 }
+
+.product-meta {
+    font-size: 12px;
+    color: #77879b;
+}
+
+.seller-label {
+    font-size: 12px;
+    color: #71829a;
+}
+
+[data-testid="stVerticalBlockBorderWrapper"] {
+    background: #ffffff;
+    border: 1px solid #e4eaf2;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(25,52,85,.035);
+}
+
+div.stButton > button {
+    background: #175da8;
+    color: #ffffff !important;
+    border: 1px solid #175da8;
+    border-radius: 10px;
+    min-height: 43px;
+    font-size: 14px;
+    font-weight: 650;
+    transition: all .18s ease;
+}
+
+div.stButton > button:hover {
+    background: #10477f;
+    border-color: #10477f;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+}
+
+div.stButton > button:disabled {
+    background: #dfe6ef;
+    color: #7b899a !important;
+    border-color: #dfe6ef;
+}
+
+div[data-testid="stFormSubmitButton"] button {
+    background: #175da8;
+    color: white !important;
+    border-radius: 10px;
+    min-height: 46px;
+    font-weight: 700;
+}
+
+div[data-testid="stFormSubmitButton"] button:hover {
+    background: #10477f;
+    color: white !important;
+}
+
 div[data-baseweb="input"] > div,
 div[data-baseweb="textarea"] > div,
 div[data-baseweb="select"] > div {
-    border-radius: 12px;
+    border-radius: 10px;
     background: white;
+    border-color: #dbe4ef;
 }
+
+div[data-baseweb="input"] input,
+div[data-baseweb="textarea"] textarea {
+    color: #1b2b45;
+}
+
+div[data-testid="stFileUploader"] {
+    background: white;
+    border-radius: 12px;
+}
+
+[data-testid="stMetric"] {
+    background: white;
+    padding: 18px;
+    border: 1px solid #e4eaf2;
+    border-radius: 14px;
+}
+
+hr {
+    border-color: #e2eaf4;
+}
+
 .footer {
     text-align: center;
-    color: #6c829e;
-    padding: 25px;
+    font-size: 12px;
+    color: #8997a9;
+    padding: 30px 0 10px;
+}
+
+.badge {
+    display: inline-block;
+    color: #175da8;
+    background: #edf5ff;
+    padding: 5px 9px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 650;
+}
+
+@media (max-width: 768px) {
+    .block-container {
+        padding: 1rem;
+    }
+
+    .hero {
+        padding: 26px 22px;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
 
 # ==========================================
-# DATA AWAL
+# DATA PRODUK
 # ==========================================
 if "products" not in st.session_state:
     st.session_state.products = {
@@ -116,7 +271,18 @@ if "products" not in st.session_state:
             "ukuran": "All Size",
             "kondisi": "Good Condition",
             "stok": 8,
-            "deskripsi": "Tanktop basic untuk outfit sehari-hari.",
+            "deskripsi": "Tanktop basic untuk sehari-hari.",
+            "penjual": "Barkas Store",
+            "foto": None
+        },
+        "BRK004": {
+            "nama": "Vintage Shirt",
+            "harga": 45000,
+            "kategori": "Pakaian",
+            "ukuran": "L",
+            "kondisi": "Good Condition",
+            "stok": 4,
+            "deskripsi": "Kemeja vintage dengan gaya casual.",
             "penjual": "Barkas Store",
             "foto": None
         }
@@ -128,11 +294,14 @@ if "cart" not in st.session_state:
 if "orders" not in st.session_state:
     st.session_state.orders = []
 
+if "seller_name" not in st.session_state:
+    st.session_state.seller_name = ""
+
 if "last_order" not in st.session_state:
     st.session_state.last_order = None
 
-if "seller_name" not in st.session_state:
-    st.session_state.seller_name = ""
+if "show_lapak" not in st.session_state:
+    st.session_state.show_lapak = False
 
 products = st.session_state.products
 
@@ -142,115 +311,156 @@ products = st.session_state.products
 def rupiah(n):
     return "Rp" + f"{n:,}".replace(",", ".")
 
-def subtotal_cart():
+def get_subtotal():
     return sum(
         products[pid]["harga"] * qty
         for pid, qty in st.session_state.cart.items()
         if pid in products
     )
 
+def safe_text(value):
+    return html.escape(str(value))
+
 # ==========================================
 # SIDEBAR
 # ==========================================
-st.sidebar.markdown("# 🛍️ BARKAS")
-st.sidebar.caption("Find your style, find your favorite.")
+st.sidebar.markdown(
+    '<div class="brand">BARKAS</div>'
+    '<div class="brand-sub">MARKETPLACE</div>',
+    unsafe_allow_html=True
+)
+
 st.sidebar.markdown("---")
 
 menu = st.sidebar.radio(
-    "MENU",
+    "NAVIGATION",
     [
         "Home",
         "Jual Barang",
         "Lapak Saya",
-        "My Bag",
+        "Keranjang",
         "Checkout",
-        "Pesanan Saya"
+        "Pesanan"
     ]
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown(
-    f"🛒 Keranjang: {sum(st.session_state.cart.values())} barang"
+st.sidebar.caption(
+    f"Barang di keranjang: {sum(st.session_state.cart.values())}"
 )
-
-st.sidebar.caption("BARKAS MARKETPLACE")
+st.sidebar.markdown("---")
+st.sidebar.caption("Barkas Marketplace")
+st.sidebar.caption("Buy and sell with ease.")
 
 # ==========================================
-# HOME / KATALOG
+# HOME
 # ==========================================
 if menu == "Home":
 
     st.markdown("""
     <div class="hero">
-        <p style="letter-spacing:2px;font-size:12px;">
-            BUY • SELL • REPEAT
-        </p>
-        <h1>Welcome to Barkas ✨</h1>
+        <div class="eyebrow">BARKAS MARKETPLACE</div>
+        <h1>Find something<br>worth keeping.</h1>
         <p>
-            Temukan barang favoritmu atau jual barangmu di sini.
-            <br>Good finds, better prices.
+            Temukan barang favoritmu atau berikan kesempatan
+            baru untuk barang yang sudah tidak kamu gunakan.
         </p>
     </div>
     """, unsafe_allow_html=True)
 
-    st.subheader("Discover Products")
-    st.caption("Jelajahi barang pilihan dari para penjual Barkas.")
-
-    cari = st.text_input(
-        "🔎 Cari barang",
-        placeholder="Cari nama produk..."
+    st.markdown(
+        '<div class="section-title">Explore products</div>',
+        unsafe_allow_html=True
     )
+    st.caption("Temukan berbagai pilihan barang dari penjual Barkas.")
 
-    kategori_filter = st.selectbox(
-        "Kategori",
-        ["Semua"] + sorted(set(
-            p["kategori"] for p in products.values()
-        ))
-    )
+    c1, c2 = st.columns([3, 1])
 
-    hasil = [
-        (pid, p) for pid, p in products.items()
+    with c1:
+        cari = st.text_input(
+            "Cari barang",
+            placeholder="Cari nama produk..."
+        )
+
+    with c2:
+        kategori_filter = st.selectbox(
+            "Kategori",
+            ["Semua"] + sorted(set(
+                p["kategori"] for p in products.values()
+            ))
+        )
+
+    listing = [
+        (pid, p)
+        for pid, p in products.items()
         if cari.lower() in p["nama"].lower()
-        and (kategori_filter == "Semua"
-             or p["kategori"] == kategori_filter)
+        and (
+            kategori_filter == "Semua"
+            or kategori_filter == p["kategori"]
+        )
     ]
 
-    if not hasil:
-        st.info("Produk belum tersedia.")
+    if not listing:
+        st.info("Belum ada produk yang sesuai.")
 
-    cols = st.columns(2)
+    cols = st.columns(3)
 
-    for i, (pid, p) in enumerate(hasil):
+    for i, (pid, p) in enumerate(listing):
 
-        with cols[i % 2]:
+        with cols[i % 3]:
 
             with st.container(border=True):
 
-                if p.get("foto") is not None:
-                    st.image(p["foto"], use_container_width=True)
+                # Product image
+                if p.get("foto"):
+                    st.image(
+                        p["foto"],
+                        use_container_width=True
+                    )
                 else:
                     st.markdown(
-                        "<div style='background:#edf5ff;"
-                        "border-radius:15px;padding:25px;"
-                        "text-align:center;font-size:60px;'>"
-                        "🛍️</div>",
+                        """
+                        <div style="
+                        background:#edf3fa;
+                        border-radius:12px;
+                        height:185px;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        color:#8ca0b9;
+                        font-size:14px;">
+                        Product image
+                        </div>
+                        """,
                         unsafe_allow_html=True
                     )
 
-                st.subheader(p["nama"])
-
                 st.markdown(
-                    f"<div class='price'>{rupiah(p['harga'])}</div>",
+                    f'<div class="product-name">'
+                    f'{safe_text(p["nama"])}</div>',
                     unsafe_allow_html=True
                 )
 
-                st.caption(
-                    f"{p['kategori']} • {p['kondisi']}"
+                st.markdown(
+                    f'<div class="product-price">'
+                    f'{rupiah(p["harga"])}</div>',
+                    unsafe_allow_html=True
                 )
-                st.write("Ukuran:", p["ukuran"])
-                st.write("Penjual:", p["penjual"])
+
+                st.markdown(
+                    f'<span class="badge">'
+                    f'{safe_text(p["kondisi"])}</span>',
+                    unsafe_allow_html=True
+                )
+
+                st.write("")
+                st.caption(
+                    f'{p["kategori"]} · Ukuran {p["ukuran"]}'
+                )
+                st.caption("Penjual: " + p["penjual"])
+                st.caption(f'Stok: {p["stok"]} pcs')
+
                 st.write(p["deskripsi"])
-                st.caption(f"Stok: {p['stok']} pcs")
 
                 if p["stok"] > 0:
 
@@ -259,11 +469,12 @@ if menu == "Home":
                         min_value=1,
                         max_value=p["stok"],
                         value=1,
+                        step=1,
                         key="qty_" + pid
                     )
 
                     if st.button(
-                        "🛍️ Add to Bag",
+                        "Tambah ke keranjang",
                         key="add_" + pid,
                         use_container_width=True
                     ):
@@ -271,14 +482,20 @@ if menu == "Home":
 
                         if current + qty <= p["stok"]:
                             st.session_state.cart[pid] = current + qty
-                            st.toast("Produk masuk keranjang!")
+                            st.toast("Produk ditambahkan.")
                         else:
                             st.error("Stok tidak mencukupi.")
+
                 else:
-                    st.warning("Stok habis.")
+                    st.button(
+                        "Stok habis",
+                        disabled=True,
+                        key="sold_" + pid,
+                        use_container_width=True
+                    )
 
     st.markdown(
-        "<div class='footer'>BARKAS MARKETPLACE</div>",
+        '<div class="footer">BARKAS MARKETPLACE · BUY AND SELL</div>',
         unsafe_allow_html=True
     )
 
@@ -287,96 +504,99 @@ if menu == "Home":
 # ==========================================
 elif menu == "Jual Barang":
 
-    st.title("💙 Jual Barang di Barkas")
-    st.write("Punya barang yang sudah tidak dipakai? Yuk, jual di sini!")
+    st.title("Jual barang")
+    st.caption("Pasang barangmu dan temukan pembeli di Barkas.")
 
-    st.info(
-        "Isi informasi produk dengan benar. "
-        "Foto produk opsional untuk demo ini."
-    )
+    with st.container(border=True):
 
-    with st.form("form_jual", clear_on_submit=True):
+        st.subheader("Informasi produk")
+        st.caption("Lengkapi detail barang yang ingin kamu jual.")
 
-        nama_penjual = st.text_input("Nama Penjual")
-        nama_barang = st.text_input("Nama Barang")
+        with st.form("form_jual", clear_on_submit=True):
 
-        kategori = st.selectbox(
-            "Kategori",
-            [
-                "Pakaian",
-                "Sepatu",
-                "Tas",
-                "Aksesoris",
-                "Elektronik",
-                "Rumah Tangga",
-                "Lainnya"
-            ]
-        )
+            penjual = st.text_input("Nama penjual")
+            nama_barang = st.text_input("Nama barang")
 
-        harga = st.number_input(
-            "Harga Jual (Rp)",
-            min_value=1000,
-            value=25000,
-            step=1000
-        )
+            col1, col2 = st.columns(2)
 
-        ukuran = st.text_input(
-            "Ukuran / Spesifikasi",
-            placeholder="Misalnya M, 38, atau tidak ada"
-        )
+            with col1:
+                kategori = st.selectbox(
+                    "Kategori",
+                    [
+                        "Pakaian",
+                        "Sepatu",
+                        "Tas",
+                        "Aksesoris",
+                        "Elektronik",
+                        "Rumah Tangga",
+                        "Lainnya"
+                    ]
+                )
 
-        kondisi = st.selectbox(
-            "Kondisi Barang",
-            [
-                "Baru",
-                "Like New",
-                "Very Good",
-                "Good Condition",
-                "Fair Condition"
-            ]
-        )
+                harga = st.number_input(
+                    "Harga jual (Rp)",
+                    min_value=1000,
+                    value=25000,
+                    step=1000
+                )
 
-        stok = st.number_input(
-            "Jumlah Stok",
-            min_value=1,
-            max_value=1000,
-            value=1
-        )
+                ukuran = st.text_input(
+                    "Ukuran / spesifikasi"
+                )
 
-        deskripsi = st.text_area(
-            "Deskripsi Barang",
-            placeholder="Jelaskan kondisi, warna, minus, dll."
-        )
+            with col2:
+                kondisi = st.selectbox(
+                    "Kondisi barang",
+                    [
+                        "Baru",
+                        "Like New",
+                        "Very Good",
+                        "Good Condition",
+                        "Fair Condition"
+                    ]
+                )
 
-        foto = st.file_uploader(
-            "Foto Barang (opsional)",
-            type=["jpg", "jpeg", "png", "webp"]
-        )
+                stok = st.number_input(
+                    "Jumlah stok",
+                    min_value=1,
+                    max_value=1000,
+                    value=1
+                )
 
-        setuju = st.checkbox(
-            "Saya memastikan informasi barang yang dijual benar."
-        )
+            deskripsi = st.text_area(
+                "Deskripsi produk",
+                placeholder="Jelaskan warna, kondisi, minus, dan detail lainnya."
+            )
 
-        submit_jual = st.form_submit_button(
-            "✨ Pasang Barang",
-            use_container_width=True
-        )
+            foto = st.file_uploader(
+                "Foto produk",
+                type=["jpg", "jpeg", "png", "webp"]
+            )
 
-    if submit_jual:
+            setuju = st.checkbox(
+                "Saya memastikan barang dan deskripsi yang saya berikan benar."
+            )
 
-        if not nama_penjual.strip() or not nama_barang.strip():
+            submit = st.form_submit_button(
+                "Pasang produk",
+                use_container_width=True
+            )
+
+    if submit:
+
+        if not penjual.strip() or not nama_barang.strip():
             st.error("Nama penjual dan nama barang wajib diisi.")
 
         elif not ukuran.strip() or not deskripsi.strip():
-            st.error("Lengkapi ukuran/spesifikasi dan deskripsi.")
+            st.error("Lengkapi ukuran dan deskripsi produk.")
 
         elif not setuju:
-            st.error("Silakan centang pernyataan terlebih dahulu.")
+            st.error("Mohon setujui pernyataan terlebih dahulu.")
 
         else:
             pid = "BRK-" + uuid.uuid4().hex[:8].upper()
 
-            foto_bytes = foto.getvalue() if foto else None
+            foto_data = foto.getvalue() if foto else None
 
             st.session_state.products[pid] = {
                 "nama": nama_barang.strip(),
@@ -386,106 +606,109 @@ elif menu == "Jual Barang":
                 "kondisi": kondisi,
                 "stok": int(stok),
                 "deskripsi": deskripsi.strip(),
-                "penjual": nama_penjual.strip(),
-                "foto": foto_bytes
+                "penjual": penjual.strip(),
+                "foto": foto_data
             }
 
-            st.session_state.seller_name = nama_penjual.strip()
+            st.session_state.seller_name = penjual.strip()
 
-            st.success("🎉 Barang berhasil dipasang di Barkas!")
-            st.write("ID Produk:", pid)
-            st.info("Cek barangmu di menu Home atau Lapak Saya.")
+            st.success("Produk berhasil ditambahkan.")
+            st.write("ID produk:", pid)
+            st.info("Produk sudah tersedia di katalog demo.")
 
 # ==========================================
 # LAPAK SAYA
 # ==========================================
 elif menu == "Lapak Saya":
 
-    st.title("🏪 Lapak Saya")
-    st.caption("Kelola barang yang kamu jual.")
+    st.title("Lapak saya")
+    st.caption("Kelola listing barang yang kamu pasang.")
 
     pemilik = st.text_input(
-        "Masukkan nama penjual",
-        value=st.session_state.seller_name,
-        key="pemilik_lapak"
+        "Nama penjual",
+        value=st.session_state.seller_name
     )
 
-    if st.button("Lihat Lapak", use_container_width=True):
-
+    if st.button("Tampilkan lapak"):
         st.session_state.seller_name = pemilik.strip()
         st.session_state.show_lapak = True
 
-    if st.session_state.get("show_lapak", False):
+    if st.session_state.show_lapak:
+
+        listing = [
+            (pid, p)
+            for pid, p in products.items()
+            if p["penjual"].casefold() == pemilik.strip().casefold()
+        ]
 
         if not pemilik.strip():
             st.warning("Masukkan nama penjual.")
-        else:
-            listing = [
-                (pid, p)
-                for pid, p in st.session_state.products.items()
-                if p["penjual"].casefold() == pemilik.strip().casefold()
-            ]
 
-            if not listing:
-                st.info("Belum ada barang dari nama penjual ini.")
+        elif not listing:
+            st.info("Belum ada produk di lapak ini.")
 
-            for pid, p in listing:
+        for pid, p in listing:
 
-                with st.container(border=True):
+            with st.container(border=True):
 
-                    if p.get("foto") is not None:
-                        st.image(p["foto"], width=180)
+                c1, c2 = st.columns([1, 3])
 
+                with c1:
+                    if p.get("foto"):
+                        st.image(p["foto"], use_container_width=True)
+                    else:
+                        st.markdown("**Product image**")
+
+                with c2:
                     st.subheader(p["nama"])
                     st.markdown(
-                        f"<div class='price'>{rupiah(p['harga'])}</div>",
+                        f'<div class="product-price">'
+                        f'{rupiah(p["harga"])}</div>',
                         unsafe_allow_html=True
                     )
+                    st.caption("ID: " + pid)
+                    st.caption(
+                        f'Stok: {p["stok"]} · {p["kondisi"]}'
+                    )
 
-                    st.write("ID:", pid)
-                    st.write("Stok:", p["stok"])
-                    st.write("Kondisi:", p["kondisi"])
+                    if pid.startswith("BRK-"):
 
-                    # Listing bawaan tidak dapat dihapus
-                    if not pid.startswith("BRK-"):
-                        st.caption("Produk contoh Barkas.")
-                    else:
-                        konfirmasi = st.checkbox(
-                            "Saya ingin menghapus listing ini",
+                        confirm = st.checkbox(
+                            "Konfirmasi hapus listing",
                             key="confirm_" + pid
                         )
 
                         if st.button(
-                            "🗑️ Hapus Barang",
-                            key="del_" + pid
+                            "Hapus listing",
+                            key="delete_" + pid
                         ):
-                            if konfirmasi:
-                                # Hanya hapus jika bukan produk dalam pesanan
-                                sudah_dipesan = any(
-                                    pid in order["items"]
-                                    for order in st.session_state.orders
+                            ordered = any(
+                                pid in order["items"]
+                                for order in st.session_state.orders
+                            )
+
+                            if not confirm:
+                                st.warning("Centang konfirmasi terlebih dahulu.")
+                            elif ordered:
+                                st.error(
+                                    "Produk sudah memiliki riwayat pesanan. "
+                                    "Tidak dapat dihapus pada demo ini."
                                 )
-
-                                if sudah_dipesan:
-                                    st.error(
-                                        "Produk sudah memiliki riwayat pesanan. "
-                                        "Hubungi admin untuk pengelolaan."
-                                    )
-                                else:
-                                    del st.session_state.products[pid]
-                                    st.session_state.cart.pop(pid, None)
-                                    st.success("Listing berhasil dihapus.")
-                                    st.rerun()
                             else:
-                                st.warning("Centang konfirmasi dahulu.")
+                                del st.session_state.products[pid]
+                                st.session_state.cart.pop(pid, None)
+                                st.success("Listing dihapus.")
+                                st.rerun()
+                    else:
+                        st.caption("Produk contoh Barkas.")
 
 # ==========================================
-# MY BAG
+# KERANJANG
 # ==========================================
-elif menu == "My Bag":
+elif menu == "Keranjang":
 
-    st.title("🛍️ My Bag")
-    st.caption("Periksa barang pilihanmu.")
+    st.title("Keranjang belanja")
+    st.caption("Periksa produk pilihanmu sebelum checkout.")
 
     cart = st.session_state.cart
 
@@ -502,65 +725,68 @@ elif menu == "My Bag":
 
             with st.container(border=True):
 
-                c1, c2 = st.columns([3, 1])
+                c1, c2 = st.columns([4, 1])
 
                 with c1:
                     st.subheader(p["nama"])
-                    st.write(f"{rupiah(p['harga'])} × {qty}")
+                    st.caption("Penjual: " + p["penjual"])
                     st.write(
-                        "Subtotal:",
+                        f'{rupiah(p["harga"])} × {qty}'
+                    )
+                    st.write(
+                        "**Subtotal:**",
                         rupiah(p["harga"] * qty)
                     )
-                    st.caption("Penjual: " + p["penjual"])
 
                 with c2:
-                    if st.button("🗑️ Hapus", key="remove_" + pid):
+                    if st.button("Hapus", key="remove_" + pid):
                         del st.session_state.cart[pid]
                         st.rerun()
 
         st.divider()
-        st.metric("Total Belanja", rupiah(subtotal_cart()))
-        st.info("Buka menu Checkout untuk melanjutkan.")
+        st.metric("Total belanja", rupiah(get_subtotal()))
+        st.caption("Lanjutkan melalui menu Checkout.")
 
 # ==========================================
 # CHECKOUT
 # ==========================================
 elif menu == "Checkout":
 
-    st.title("💳 Checkout")
+    st.title("Checkout")
+    st.caption("Lengkapi informasi pengiriman dan pembayaran.")
 
-    cart = st.session_state.cart
+    cart = {
+        pid: qty
+        for pid, qty in st.session_state.cart.items()
+        if pid in products
+    }
 
     if not cart:
         st.info("Keranjang masih kosong.")
     else:
 
-        valid_cart = {
-            pid: qty for pid, qty in cart.items()
-            if pid in products
-        }
-
         subtotal = sum(
             products[pid]["harga"] * qty
-            for pid, qty in valid_cart.items()
+            for pid, qty in cart.items()
         )
 
-        st.subheader("Ringkasan Pesanan")
+        st.subheader("Ringkasan pesanan")
 
-        for pid, qty in valid_cart.items():
+        for pid, qty in cart.items():
             p = products[pid]
             st.write(
-                f"- {p['nama']} × {qty} "
-                f"— {rupiah(p['harga'] * qty)}"
+                f'**{p["nama"]}** × {qty} — '
+                f'{rupiah(p["harga"] * qty)}'
             )
+            st.caption("Penjual: " + p["penjual"])
 
         st.divider()
 
-        with st.form("form_checkout"):
+        with st.form("checkout_form"):
 
-            nama = st.text_input("Nama Penerima")
-            telepon = st.text_input("Nomor Telepon")
-            alamat = st.text_area("Alamat Lengkap")
+            nama = st.text_input("Nama penerima")
+            telepon = st.text_input("Nomor telepon")
+            alamat = st.text_area("Alamat lengkap")
 
             kurir = st.selectbox(
                 "Pengiriman",
@@ -568,7 +794,7 @@ elif menu == "Checkout":
             )
 
             metode = st.selectbox(
-                "Metode Pembayaran",
+                "Metode pembayaran",
                 ["Transfer (Simulasi)", "COD"]
             )
 
@@ -579,16 +805,23 @@ elif menu == "Checkout":
             st.write("Ongkir simulasi:", rupiah(ongkir))
 
             st.markdown(
-                f"<div style='background:white;padding:20px;"
-                f"border-radius:18px;'>"
-                f"<div style='color:#526a85;'>TOTAL PEMBAYARAN</div>"
-                f"<div style='font-size:30px;font-weight:800;"
-                f"color:#176ed0;'>{rupiah(total)}</div></div>",
+                f"""
+                <div style="background:white;padding:20px;
+                border:1px solid #e4eaf2;border-radius:14px;">
+                    <div style="color:#71829a;font-size:12px;">
+                        TOTAL PEMBAYARAN
+                    </div>
+                    <div style="font-size:29px;font-weight:800;
+                    color:#175da8;">
+                        {rupiah(total)}
+                    </div>
+                </div>
+                """,
                 unsafe_allow_html=True
             )
 
             submit_order = st.form_submit_button(
-                "💙 Buat Pesanan",
+                "Buat pesanan",
                 use_container_width=True
             )
 
@@ -601,23 +834,27 @@ elif menu == "Checkout":
                 .replace(" ", "")
             )
 
-            if not nama.strip() or not telepon.strip() or not alamat.strip():
-                st.error("Lengkapi data penerima.")
+            if not nama.strip() or not phone or not alamat.strip():
+                st.error("Lengkapi seluruh data penerima.")
+
             elif not phone.isdigit():
                 st.error("Nomor telepon tidak valid.")
+
             elif any(
                 qty > products[pid]["stok"]
-                for pid, qty in valid_cart.items()
+                for pid, qty in cart.items()
             ):
-                st.error("Stok tidak mencukupi. Periksa kembali.")
+                st.error("Stok tidak mencukupi.")
+
             else:
-                # Kurangi stok setelah validasi
-                for pid, qty in valid_cart.items():
+                nomor = "BRK-" + uuid.uuid4().hex[:8].upper()
+
+                for pid, qty in cart.items():
                     products[pid]["stok"] -= qty
 
                 order = {
-                    "nomor": "BRK-" + uuid.uuid4().hex[:8].upper(),
-                    "nama": nama,
+                    "nomor": nomor,
+                    "nama": nama.strip(),
                     "telepon": telepon,
                     "alamat": alamat,
                     "kurir": kurir,
@@ -625,7 +862,7 @@ elif menu == "Checkout":
                     "subtotal": subtotal,
                     "ongkir": ongkir,
                     "total": total,
-                    "items": dict(valid_cart),
+                    "items": dict(cart),
                     "status": (
                         "Menunggu Konfirmasi"
                         if metode == "COD"
@@ -638,23 +875,26 @@ elif menu == "Checkout":
                 st.session_state.cart = {}
                 st.rerun()
 
-    if st.session_state.last_order:
-        order = st.session_state.last_order
+    order = st.session_state.last_order
 
-        st.success("🎉 Pesanan berhasil dibuat!")
-        st.subheader("Konfirmasi Pesanan")
-        st.write("Nomor:", order["nomor"])
-        st.write("Nama:", order["nama"])
-        st.write("Total:", rupiah(order["total"]))
-        st.info("Status: " + order["status"])
-        st.caption("Pembayaran masih simulasi.")
+    if order:
+        st.success("Pesanan berhasil dibuat.")
+
+        with st.container(border=True):
+            st.subheader("Konfirmasi pesanan")
+            st.write("Nomor pesanan:", order["nomor"])
+            st.write("Nama:", order["nama"])
+            st.write("Total:", rupiah(order["total"]))
+            st.write("Metode:", order["metode"])
+            st.info("Status: " + order["status"])
+            st.caption("Transaksi ini masih berupa simulasi.")
 
 # ==========================================
-# PESANAN SAYA
+# PESANAN
 # ==========================================
-elif menu == "Pesanan Saya":
+elif menu == "Pesanan":
 
-    st.title("📦 Pesanan Saya")
+    st.title("Riwayat pesanan")
 
     if not st.session_state.orders:
         st.info("Belum ada pesanan.")
@@ -663,8 +903,8 @@ elif menu == "Pesanan Saya":
 
             with st.container(border=True):
 
-                st.subheader("Order " + order["nomor"])
-                st.write("Nama:", order["nama"])
+                st.subheader("Pesanan " + order["nomor"])
+                st.caption(order["nama"])
 
                 for pid, qty in order["items"].items():
                     nama_produk = (
@@ -678,10 +918,18 @@ elif menu == "Pesanan Saya":
                 st.write("Pembayaran:", order["metode"])
                 st.info("Status: " + order["status"])
 
-                st.caption("Status pesanan merupakan simulasi.")
+                st.caption("Status pesanan demo.")
 
 # ==========================================
 # FOOTER
 # ==========================================
 st.sidebar.markdown("---")
-st.sidebar.caption("© BARKAS MARKETPLACE")
+st.sidebar.caption("BARKAS MARKETPLACE")
+st.sidebar.caption("A better way to buy and sell.")
+
+st.markdown(
+    '<div class="footer">'
+    'BARKAS · Marketplace Demo · Buy and Sell'
+    '</div>',
+    unsafe_allow_html=True
+)
